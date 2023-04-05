@@ -9,8 +9,8 @@ document.addEventListener("click", function(e){
 
 function handleAddClick(menuItemId){
     const menuObj = menuArray.filter(function(food){
-        return menuItem === menuItemId
-    })
+        return food.id == menuItemId
+    })[0]
         
         console.log(menuObj)
 }
@@ -26,7 +26,7 @@ function render() {
         
             <img 
             class="menuItem-img" 
-            src="/photos/${menuItem.image}"
+            src="photos/${menuItem.image}"
             >
             <div>
             ${menuItem.ingredients}
