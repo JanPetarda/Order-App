@@ -1,7 +1,20 @@
 body {
-    margin: 0;
+    margin:0 auto auto 0;
+    width: 400px;
+
 }
 
 .emojiEl {
     width: 400px;
+}
+
+.modal {
+    border: 2px solid black;
+    width: 300px;
+    height: 300px;
+    position: fixed;
+    display: none;
+    position: relative;
+    margin: auto 0 0 auto;
+
 }
