@@ -2,7 +2,7 @@ const summaryOrderArray = []
 const summaryOrder = document.getElementById('feed')
 const orderNowBtn = document.getElementById('orderBtn')
 const completeOrderBtn = document.getElementById('complete-order-btn')
-
+const finalMessage = document.getElementById('final-message')
 
 
 completeOrderBtn.addEventListener("click", function(){
@@ -14,16 +14,17 @@ orderNowBtn.addEventListener("click", function(){
 })
 
 document.addEventListener("click", function(e){
-    if(e.target.id){
-        handleAddClick(e.target.id)
-    }else if(e.target.id){
-        completeOrder(e.target.id)
-
+    if(e.target.dataset.add){
+        handleAddClick(e.target.dataset.add)
+    }else if(e.target.dataset.order){
+        completeOrder(e.target.dataset.order)
+    } else if (e.target.dataset.remove){
+        removeProduct(e.target.dataset.remove)
     }
 })
 
 function completeOrder() {
-    console.log("your order is on the way!")
+    finalMessage.innerHTML = "Your order is on the way!"
 }
 
 function renderSum() {
@@ -38,32 +39,35 @@ function renderSum() {
 
 function renderBasket(){
     let basket = ''
-        for (let orderEntry of summaryOrderArray) {
-            basket+= `<div>${orderEntry.price}$</div>  ${orderEntry.name} <button id="remove-btn">remove</button><br>`
-        }
+            for (let i = 0; i < summaryOrderArray.length; i++) {
+                
+                let orderEntry = summaryOrderArray[i]
 
-        document.getElementById('basket').innerHTML = `Products: ${basket}`
+                basket+= `
+                <div>${orderEntry.price}$</div>  
+                <div> ${orderEntry.name} </div>
+                <button data-remove = ${i}>remove</button><br>
+                `
+            }
+                document.getElementById('basket').innerHTML = `Products: ${basket}`
+    }
 
 
+function removeProduct(product) {
+    summaryOrderArray.splice(product, 1)
+    renderSum()
+    renderBasket()
 }
-
-
-
- 
+        
 function handleAddClick(menuItemId){
     const menuObj = menuArray.filter(function(food){
         return menuItemId === food.id
     })[0]
-        
-        console.log(menuObj.price)
         summaryOrderArray.push({price: menuObj.price, name: menuObj.name})
-        console.log(summaryOrderArray)
         renderSum()
         renderBasket()
 
 }
-
-
 
 function renderMenu() {
     let newFoodObj = ``
@@ -88,25 +92,16 @@ function renderMenu() {
             ${menuItem.ingredients}
             </div>
 
-        
-            
-            
         </div>
-            <button id="${menuItem.id}">+</button>
+            <button id="${menuItem.id}"
+            data-add= ${menuItem.id}
+            >+</button>
         </div>
     `
     })
     
     document.getElementById('feed').innerHTML = newFoodObj
-
-    
-
 }
-
-
-
-
-
 
 renderMenu()
 
